@@ -2,10 +2,21 @@
 
 #include "Tank.h"
 #include "TankAimingComponent.h"
+#include "Components/InputComponent.h"
 
 void ATank::SetBarrrelMeshComponentReference(UTankBarrelMeshComponent * BarrelMeshComponentToSet)
 {
 	TankAimingComponent->SetBarrrelMeshComponentReference(BarrelMeshComponentToSet);
+}
+
+void ATank::SetTurretMeshComponentReference(UTankTurretMeshComponent * TurretMeshComponentToSet)
+{
+	TankAimingComponent->SetTurretMeshComponentReference(TurretMeshComponentToSet);
+}
+
+void ATank::Fire()
+{
+	UE_LOG(LogTemp, Warning, TEXT("%s is firing"), *GetName())
 }
 
 // Sets default values

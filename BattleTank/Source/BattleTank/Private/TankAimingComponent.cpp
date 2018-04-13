@@ -4,16 +4,10 @@
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
 #include "TankBarrelMeshComponent.h"
+#include "TankTurretMeshComponent.h"
 
 // Sets default values for this component's properties
-UTankAimingComponent::UTankAimingComponent()
-{
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
-}
+UTankAimingComponent::UTankAimingComponent() { PrimaryComponentTick.bCanEverTick = false; }
 
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
@@ -39,24 +33,28 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		MoveBarrelTowards(AimDirection);
 	}
-	else
-	{
-		auto Time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f : No aim solution found"), Time)
-	}
 }
 
 void UTankAimingComponent::SetBarrrelMeshComponentReference(UTankBarrelMeshComponent * BarrelMeshComponentToSet)
 {
+	if (!BarrelMeshComponentToSet) { return; }
 	BarrelMeshComponent = BarrelMeshComponentToSet;
+}
+
+void UTankAimingComponent::SetTurretMeshComponentReference(UTankTurretMeshComponent * TurretMeshComponentToSet)
+{
+	if (!TurretMeshComponentToSet) { return; }
+	TurretMeshComponent = TurretMeshComponentToSet;
 }
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
+	// Calculate the difference between the rotation we aiming and the actual rotation 
+	// of the barrelMeshComponent
 	auto BarrelRotator = BarrelMeshComponent->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 	
-	BarrelMeshComponent->Elevate(5); // TODO remove magic number
+	BarrelMeshComponent->Elevate(DeltaRotator.Pitch);
+	TurretMeshComponent->Rotate(DeltaRotator.Yaw);
 }
-

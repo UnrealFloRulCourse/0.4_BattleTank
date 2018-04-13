@@ -7,6 +7,7 @@
 
 // Forward Declaration
 class UTankBarrelMeshComponent;
+class UTankTurretMeshComponent;
 class UTankAimingComponent;
 
 UCLASS()
@@ -19,6 +20,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = SetUp)
 	void SetBarrrelMeshComponentReference(UTankBarrelMeshComponent* BarrelMeshComponentToSet);
+
+	UFUNCTION(BlueprintCallable, Category = SetUp)
+	void SetTurretMeshComponentReference(UTankTurretMeshComponent* TurretMeshComponentToSet);
+
+	UFUNCTION(BlueprintCallable, Category = Firing)
+	void Fire();
 
 protected:
 	UTankAimingComponent * TankAimingComponent;
