@@ -1,22 +1,21 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank.h"
+#include "Engine/World.h"
 #include "TankAimingComponent.h"
 #include "Components/InputComponent.h"
+#include "TankBarrelMeshComponent.h"
+#include "Projectile.h"
 
 void ATank::SetBarrrelMeshComponentReference(UTankBarrelMeshComponent * BarrelMeshComponentToSet)
 {
 	TankAimingComponent->SetBarrrelMeshComponentReference(BarrelMeshComponentToSet);
+	LocalBarrelRef = BarrelMeshComponentToSet;
 }
 
 void ATank::SetTurretMeshComponentReference(UTankTurretMeshComponent * TurretMeshComponentToSet)
 {
 	TankAimingComponent->SetTurretMeshComponentReference(TurretMeshComponentToSet);
-}
-
-void ATank::Fire()
-{
-	UE_LOG(LogTemp, Warning, TEXT("%s is firing"), *GetName())
 }
 
 // Sets default values
@@ -43,5 +42,16 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void ATank::AimAt(FVector HitLocation) 
 {
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
+}
+
+void ATank::Fire()
+{
+	if (!LocalBarrelRef) { return; }
+
+	// Spawn a projectile at the socket location on the barrel
+	GetWorld()->SpawnActor<AProjectile>(
+		ProjectileBlueprint,
+		LocalBarrelRef->GetSocketLocation(FName("Launcher")),
+		LocalBarrelRef->GetSocketRotation(FName("Launcher")));
 }
 

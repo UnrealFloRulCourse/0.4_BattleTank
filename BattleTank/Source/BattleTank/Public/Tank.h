@@ -9,6 +9,7 @@
 class UTankBarrelMeshComponent;
 class UTankTurretMeshComponent;
 class UTankAimingComponent;
+class AProjectile;
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -43,7 +44,12 @@ private:
 
 private:
 	UPROPERTY(EditAnywhere, Category = Firing)
-	float LaunchSpeed = 100000; // TODO find sensible value default
+	float LaunchSpeed = 4000; // TODO find sensible value default
 
+	UPROPERTY(EditAnywhere, Category = Setup)
+	TSubclassOf<AProjectile> ProjectileBlueprint;
+
+	// Local barrel reference to spawn preojectile
+	UTankBarrelMeshComponent* LocalBarrelRef = nullptr;
 	
 };
