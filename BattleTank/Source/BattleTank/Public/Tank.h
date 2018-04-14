@@ -9,6 +9,7 @@
 class UTankBarrelMeshComponent;
 class UTankTurretMeshComponent;
 class UTankAimingComponent;
+class UTankMovementComponent;
 class AProjectile;
 
 UCLASS()
@@ -31,6 +32,10 @@ public:
 protected:
 	UTankAimingComponent * TankAimingComponent;
 
+	UPROPERTY(BlueprintReadOnly)
+	UTankMovementComponent * TankMovementComponent;
+
+
 private:
 	// Sets default values for this pawn's properties
 	ATank();
@@ -38,18 +43,22 @@ private:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
-
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	UPROPERTY(EditAnywhere, Category = Firing)
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float LaunchSpeed = 4000; // TODO find sensible value default
 
-	UPROPERTY(EditAnywhere, Category = Setup)
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
 	// Local barrel reference to spawn preojectile
 	UTankBarrelMeshComponent* LocalBarrelRef = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float ReloadTimeInSeconds = 3;
+	
+	double LastFireTime = 0;
 	
 };

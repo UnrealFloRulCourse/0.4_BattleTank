@@ -5,7 +5,17 @@
 #include "TankAimingComponent.h"
 #include "Components/InputComponent.h"
 #include "TankBarrelMeshComponent.h"
+#include "TankMovementComponent.h"
 #include "Projectile.h"
+
+// Sets default values
+ATank::ATank()
+{
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = false;
+	// No need to protect pointer as added at construction
+	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming component"));
+}
 
 void ATank::SetBarrrelMeshComponentReference(UTankBarrelMeshComponent * BarrelMeshComponentToSet)
 {
@@ -16,15 +26,6 @@ void ATank::SetBarrrelMeshComponentReference(UTankBarrelMeshComponent * BarrelMe
 void ATank::SetTurretMeshComponentReference(UTankTurretMeshComponent * TurretMeshComponentToSet)
 {
 	TankAimingComponent->SetTurretMeshComponentReference(TurretMeshComponentToSet);
-}
-
-// Sets default values
-ATank::ATank()
-{
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
-	// No need to protect pointer as added at construction
-	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming component"));
 }
 
 // Called when the game starts or when spawned
@@ -46,12 +47,19 @@ void ATank::AimAt(FVector HitLocation)
 
 void ATank::Fire()
 {
-	if (!LocalBarrelRef) { return; }
-
+	bool bIsReloaded = (GetWorld()->GetTimeSeconds() - LastFireTime) > ReloadTimeInSeconds;
+	
+	if (LocalBarrelRef && bIsReloaded) 
+	{ 
 	// Spawn a projectile at the socket location on the barrel
-	GetWorld()->SpawnActor<AProjectile>(
-		ProjectileBlueprint,
-		LocalBarrelRef->GetSocketLocation(FName("Launcher")),
-		LocalBarrelRef->GetSocketRotation(FName("Launcher")));
+		auto ProjectileToLaunch = GetWorld()->SpawnActor<AProjectile>(
+			ProjectileBlueprint,
+			LocalBarrelRef->GetSocketLocation(FName("Launcher")),
+			LocalBarrelRef->GetSocketRotation(FName("Launcher")));
+
+		ProjectileToLaunch->LaunchProjectile(LaunchSpeed);
+		LastFireTime = GetWorld()->GetTimeSeconds();
+	}
+	
 }
 
