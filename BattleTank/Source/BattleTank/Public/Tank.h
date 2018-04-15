@@ -48,7 +48,7 @@ private:
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	float LaunchSpeed = 4000; // TODO find sensible value default
+	float LaunchSpeed = 10000; 
 
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBlueprint;
