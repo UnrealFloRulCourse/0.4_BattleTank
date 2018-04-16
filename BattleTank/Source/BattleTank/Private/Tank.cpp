@@ -57,8 +57,16 @@ void ATank::Fire()
 			LocalBarrelRef->GetSocketLocation(FName("Launcher")),
 			LocalBarrelRef->GetSocketRotation(FName("Launcher")));
 
-		ProjectileToLaunch->LaunchProjectile(LaunchSpeed);
-		LastFireTime = GetWorld()->GetTimeSeconds();
+		if (ProjectileToLaunch)
+		{
+			ProjectileToLaunch->LaunchProjectile(LaunchSpeed);
+			LastFireTime = GetWorld()->GetTimeSeconds();
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Failed to spawn projectile"))
+		}
+		
 	}
 	
 }

@@ -51,13 +51,13 @@ private:
 	float LaunchSpeed = 10000; 
 
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
-	TSubclassOf<AProjectile> ProjectileBlueprint;
+	TSubclassOf<AProjectile> ProjectileBlueprint = nullptr;
 
 	// Local barrel reference to spawn preojectile
 	UTankBarrelMeshComponent* LocalBarrelRef = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	float ReloadTimeInSeconds = 3;
+	float ReloadTimeInSeconds = 2.f;
 	
 	double LastFireTime = 0;
 	

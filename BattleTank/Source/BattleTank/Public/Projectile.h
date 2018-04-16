@@ -27,6 +27,6 @@ public:
 	void LaunchProjectile(float LaunchSpeed);
 
 protected:
-	UProjectileMovementComponent * ProjectileMovementComponent;
+	UProjectileMovementComponent * ProjectileMovementComponent = nullptr;
 
 };
