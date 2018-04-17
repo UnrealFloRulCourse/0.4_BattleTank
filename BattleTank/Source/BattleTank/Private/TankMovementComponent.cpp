@@ -12,7 +12,13 @@ void UTankMovementComponent::Initialise(UTankTrackMeshComponent* LeftTrackToSet,
 
 void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%f : %s is moving along : %s"), GetWorld()->GetTimeSeconds(), *GetOwner()->GetName(), *MoveVelocity.GetSafeNormal().ToString())
+	auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+	auto AIForwardIntention = MoveVelocity.GetSafeNormal();
+
+	// The required amount of "forward" throttle needed to go towards the player
+	float ForwardThrow = FVector::DotProduct(AIForwardIntention, TankForward);
+
+	IntendMoveForward(ForwardThrow);
 }
 
 

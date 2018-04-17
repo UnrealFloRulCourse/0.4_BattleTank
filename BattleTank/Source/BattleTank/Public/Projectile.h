@@ -7,7 +7,7 @@
 #include "Projectile.generated.h"
 
 class UProjectileMovementComponent;
-
+// TODO retablish the collision preset on projectile BP to re enable collision with the tank
 UCLASS()
 class BATTLETANK_API AProjectile : public AActor
 {
