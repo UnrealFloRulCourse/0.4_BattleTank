@@ -17,8 +17,10 @@ void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, boo
 
 	// The required amount of "forward" throttle needed to go towards the player
 	float ForwardThrow = FVector::DotProduct(AIForwardIntention, TankForward);
+	float RightwardThrow = FVector::CrossProduct(AIForwardIntention, TankForward).Z;
 
 	IntendMoveForward(ForwardThrow);
+	IntendTurnRight(RightwardThrow);
 }
 
 

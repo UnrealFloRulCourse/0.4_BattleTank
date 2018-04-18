@@ -24,7 +24,7 @@ private:
 
 
 	// How close can the AI tank get
-	float AcceptanceRadius = 0;
+	float AcceptanceRadius = 2000;
 
 public:
 	ATank * GetControlledTank() const;
