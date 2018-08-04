@@ -15,7 +15,7 @@ class BATTLETANK_API UTankTrackMeshComponent : public UStaticMeshComponent
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintCallable, Category = Input)
+	UFUNCTION(BlueprintCallable, Category = "Input")
 	void SetThrottle(float ThrottleValueInput);
 	
 	// Max force per track, in newton

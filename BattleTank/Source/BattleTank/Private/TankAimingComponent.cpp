@@ -35,20 +35,15 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	}
 }
 
-void UTankAimingComponent::SetBarrrelMeshComponentReference(UTankBarrelMeshComponent * BarrelMeshComponentToSet)
+void UTankAimingComponent::Initialise(UTankBarrelMeshComponent * BarrelToSet, UTankTurretMeshComponent * TurretToSet)
 {
-	if (!BarrelMeshComponentToSet) { return; }
-	BarrelMeshComponent = BarrelMeshComponentToSet;
-}
-
-void UTankAimingComponent::SetTurretMeshComponentReference(UTankTurretMeshComponent * TurretMeshComponentToSet)
-{
-	if (!TurretMeshComponentToSet) { return; }
-	TurretMeshComponent = TurretMeshComponentToSet;
+	BarrelMeshComponent = BarrelToSet;
+	TurretMeshComponent = TurretToSet;
 }
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
+	if (!BarrelMeshComponent || !TurretMeshComponent) { return; }
 	// Calculate the difference between the rotation we aiming and the actual rotation 
 	// of the barrelMeshComponent
 	auto BarrelRotator = BarrelMeshComponent->GetForwardVector().Rotation();
