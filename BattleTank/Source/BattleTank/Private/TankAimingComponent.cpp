@@ -12,7 +12,7 @@ UTankAimingComponent::UTankAimingComponent() { PrimaryComponentTick.bCanEverTick
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-	if (!BarrelMeshComponent) { return; }
+	if (!ensure(BarrelMeshComponent)) { return; }
 	FVector OutLaunchVelocity;
 	FVector StartLocation = BarrelMeshComponent->GetSocketLocation(FName("Launcher"));
 	// Calculate the outLaunchVelocity
@@ -43,7 +43,7 @@ void UTankAimingComponent::Initialise(UTankBarrelMeshComponent * BarrelToSet, UT
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
-	if (!BarrelMeshComponent || !TurretMeshComponent) { return; }
+	if (ensure(BarrelMeshComponent) || ensure(TurretMeshComponent)) { return; }
 	// Calculate the difference between the rotation we aiming and the actual rotation 
 	// of the barrelMeshComponent
 	auto BarrelRotator = BarrelMeshComponent->GetForwardVector().Rotation();
